@@ -1,0 +1,45 @@
+:root {
+    --main-color: #2c637e;
+    --second-color: #88c3db;
+    --third-color: #fff;
+    --fourth-color: #59595a;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+#sidebar {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    background-color: var(--second-color);
+    padding-top: 56px; /* Adjust according to the height of your navbar */
+}
+
+#main-content {
+    margin-left: 250px;
+    padding: 40px;
+}
+.sidebar-link {
+    padding: 10px 20px;
+    display: block;
+}
+.sidebar-link:hover {
+    background-color: var(--third-color);
+}
+
+a.sidebar-link {
+    color: var(--main-color);
+}
+
+nav {
+    background-color: var(--main-color);
+}
+
+a.navbar-brand, a.nav-link {
+    color: var(--third-color);
+}
