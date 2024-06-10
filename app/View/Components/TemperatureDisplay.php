@@ -8,16 +8,10 @@ class TemperatureDisplay extends Component
 {
     public $temperature;
 
-    public function __construct()
+    public function __construct($temperature)
     {
         // Simulate fetching temperature data
-        $this->temperature = $this->fetchTemperature();
-    }
-
-    protected function fetchTemperature()
-    {
-        // Replace this with actual data fetching logic
-        return 22; // Example temperature data
+        $this->temperature = $temperature;
     }
 
     public function render()
