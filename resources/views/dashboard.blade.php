@@ -59,7 +59,7 @@
                             Deposit Pakan
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Banyak Pakan: {{ 100 - $persentasePakan }}%</p>
+                            <p class="card-text">Pakan: <span id="persentase_pekan">--</span>%</p>
                             <p class="card-text">Cukup untuk 3 hari</p>
                             <x-bottle-visualization :rotated="true" :waterLevel="$persentasePakan" />
                             <div class="row justify-content-center">
