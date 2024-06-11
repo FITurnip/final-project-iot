@@ -1,6 +1,6 @@
 <div class="bottle {{ $rotated ? 'bottle-rotated' : '' }}">
     <div class="bottle-neck"></div>
-    <div class="water" style="height: {{ $waterLevel }}%;"></div>
+    <div class="mount" style="height: {{ $mountLevel }}%;"></div>
 </div>
 
 <style>
@@ -29,7 +29,7 @@
   .bottle-rotated {
     transform: rotate(180deg);
   }
-  .water {
+  .mount {
     position: absolute;
     bottom: 0;
     left: 0;

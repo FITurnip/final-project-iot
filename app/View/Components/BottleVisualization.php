@@ -6,19 +6,19 @@ use Illuminate\View\Component;
 class BottleVisualization extends Component
 {
     public $rotated;
-    public $waterLevel;
+    public $mountLevel;
 
     /**
      * Create a new component instance.
      *
      * @param bool $rotated
-     * @param int $waterLevel
+     * @param int $mountLevel
      * @return void
      */
-    public function __construct($rotated = false, $waterLevel = 0)
+    public function __construct($rotated = false, $mountLevel = 0)
     {
         $this->rotated = $rotated;
-        $this->waterLevel = $waterLevel;
+        $this->mountLevel = $mountLevel;
     }
 
     /**

@@ -34,6 +34,7 @@ class FeedControl {
         }
         
         $('#persentase_pekan').html(persentage);
+        $('.mount').css('height', 100 - persentage + "%");
     }
 
     onConnect() {

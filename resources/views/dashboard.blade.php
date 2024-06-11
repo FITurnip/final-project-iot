@@ -49,7 +49,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <h1 class="my-4">Budidaya Ikan Berbasis IoT</h1>
+                    <h1 class="my-4">Budidaya Ikan Lele Berbasis IoT</h1>
                 </div>
             </div>
             <div class="row">
@@ -61,7 +61,7 @@
                         <div class="card-body">
                             <p class="card-text">Pakan: <span id="persentase_pekan">--</span>%</p>
                             <p class="card-text">Cukup untuk 3 hari</p>
-                            <x-bottle-visualization :rotated="true" :waterLevel="$persentasePakan" />
+                            <x-bottle-visualization :rotated="true" :mountLevel="40" />
                             <div class="row justify-content-center">
                                 <div class="col-4">
                                     <button class="btn btn-primary btn-block" id="feed-btn">Berikan Pakan</button>
