@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Simple Dashboard</title>
+    <title>Monitoring</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
@@ -59,9 +59,14 @@
                             Deposit Pakan
                         </div>
                         <div class="card-body">
-                            <x-bottle-visualization :rotated="true" :waterLevel="$persentasePakan" />
                             <p class="card-text">Banyak Pakan: {{ 100 - $persentasePakan }}%</p>
                             <p class="card-text">Cukup untuk 3 hari</p>
+                            <x-bottle-visualization :rotated="true" :waterLevel="$persentasePakan" />
+                            <div class="row justify-content-center">
+                                <div class="col-4">
+                                    <button class="btn btn-primary btn-block" id="feed-btn">Berikan Pakan</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,6 +147,7 @@
     <script src="{{ asset('assets/js/chart.js') }}"></script>
     <script src="{{ asset('assets/js/mqtthandler.js') }}"></script>
     <script src="{{ asset('assets/js/temperaturecontrol.js') }}"></script>
+    <script src="{{ asset('assets/js/feedcontrol.js') }}"></script>
 </body>
 
 </html>

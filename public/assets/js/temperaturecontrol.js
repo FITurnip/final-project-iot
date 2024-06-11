@@ -1,48 +1,53 @@
-var currentTemperature;
-kontrolSuhuShow = false;
-suhuDiubah = false;
-
-
-// Define the action to trigger when a message is received
-function handleMessage(message) {
-    currentTemperature = JSON.parse(message);
-    console.log(currentTemperature.temp);
-    console.log(kontrolSuhuShow);
-    if(kontrolSuhuShow == false) {
-        $('#kontrol-suhu').show();
-        kontrolSuhuShow = true;
+class TemperatureController {
+    constructor() {
+        this.currentTemperature = null;
+        this.controlTemperatureShow = false;
+        this.temperatureChanged = false;
+        this.topic = '/p/temp';
+        this.mqttClient = new MQTTClient('broker.hivemq.com', 8000, this.handleMessage.bind(this));
     }
 
-    if(suhuDiubah == false) {
-        $('#temperature_input').val(parseInt(currentTemperature.temp, 10));
-        $('#current-temp').html(parseInt(currentTemperature.temp, 10));
-    } else {
-        suhuDiubah = false;
+    handleMessage(message) {
+        this.currentTemperature = JSON.parse(message);
+        console.log(this.currentTemperature.temp);
+        console.log(this.controlTemperatureShow);
+        if (!this.controlTemperatureShow) {
+            $('#kontrol-suhu').show();
+            this.controlTemperatureShow = true;
+        }
+
+        if (!this.temperatureChanged) {
+            $('#temperature_input').val(parseInt(this.currentTemperature.temp, 10));
+            $('#current-temp').html(parseInt(this.currentTemperature.temp, 10));
+        } else {
+            this.temperatureChanged = false;
+        }
+    }
+
+    onConnect() {
+        $('#kontrol-suhu').hide();
+        console.log('Connected to broker 1');
+        this.mqttClient.subscribe(this.topic);
+    }
+
+    changeTemperature(newTemperatureVal) {
+        $('#temperature_input').val(newTemperatureVal);
+        var message = JSON.stringify({"temp": newTemperatureVal});
+        this.mqttClient.publish(this.topic, message);
+        this.temperatureChanged = true;
+    }
+
+    init() {
+        $(document).ready(() => {
+            $('#turun-suhu').on('click', () => this.changeTemperature($('#temperature_input').val() - 1));
+            $('#naik-suhu').on('click', () => this.changeTemperature(+$('#temperature_input').val() + 1));
+            $('#temperature_input').on('change', () => console.log("berhasil"));
+
+            this.mqttClient.connect(this.onConnect.bind(this));
+        });
     }
 }
 
-// Create an instance of MQTTClient and connect to the broker
-var mqttClient = new MQTTClient('broker.hivemq.com', 8000, handleMessage);
-
-// Define the onSuccess callback function
-function onConnect() {
-    $('#kontrol-suhu').hide();
-    console.log('Connected to broker');
-    mqttClient.subscribe('/p/temp');
-}
-
-function changeTemperature(new_temperature_val) {
-    $('#temperature_input').val(new_temperature_val);
-    var message = JSON.stringify({"temp": new_temperature_val});
-    mqttClient.publish('/p/temp', message);
-    suhuDiubah = true;
-}
-
-$(document).ready(function() {
-    $('#turun-suhu').on('click', function() {changeTemperature($('#temperature_input').val() - 1)});
-    $('#naik-suhu').on('click', function() {changeTemperature(+$('#temperature_input').val() + 1)});
-    $('#temperature_input').on('change', function() {console.log("berhasil")});
-});
-
-// Connect to the broker and set up subscription and publishing
-mqttClient.connect(onConnect);
+// Instantiate the TemperatureController and initialize it
+const tempController = new TemperatureController();
+tempController.init();
