@@ -1,8 +1,9 @@
 class MQTTClient {
-    constructor(brokerAddress, port) {
+    constructor(brokerAddress, port, onMessageCallback) {
         this.client = new Paho.MQTT.Client(brokerAddress, port, 'clientId_' + Math.random().toString(16).substr(2, 8));
         this.client.onConnectionLost = this.onConnectionLost.bind(this);
         this.client.onMessageArrived = this.onMessageArrived.bind(this);
+        this.onMessageCallback = onMessageCallback;
     }
 
     connect(onSuccess) {
@@ -28,5 +29,8 @@ class MQTTClient {
     onMessageArrived(message) {
         console.log('Received message:', message.payloadString);
         this.payload = message.payloadString;
+        if (this.onMessageCallback) {
+            this.onMessageCallback(message.payloadString);
+        }
     }
 }

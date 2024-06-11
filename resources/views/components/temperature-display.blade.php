@@ -1,4 +1,4 @@
-<div id="temperature" class="temp-display text-primary">{{ $temperature }} °C</div>
+<div id="temperature" class="temp-display text-primary"><span id="current-temp">--</span> °C</div>
 
 <style>
     .temp-display {
