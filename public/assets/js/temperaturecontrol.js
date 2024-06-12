@@ -16,10 +16,13 @@ class TemperatureController {
         }
             
         $('#kontrol-suhu').show();
-        $('#temperature_input').val(parseInt(this.messageParsed.temp, 10));
         if(this.messageParsed.change_temp) {
+            if(this.firstInput) this.firstInput = false;
+            else $('#current-temp').html(parseInt(this.messageParsed.temp, 10));
             $('#change_temp').show();
         } else {
+            $('#current-temp').html(parseInt(this.messageParsed.temp, 10));
+            $('#temperature_input').val(parseInt(this.messageParsed.temp, 10));
             $('#change_temp').hide();
         }
     }
