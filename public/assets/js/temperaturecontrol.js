@@ -8,23 +8,41 @@ class TemperatureController {
     }
 
     handleMessage(message) {
-        this.messageParsed = JSON.parse(message);
-        console.log(this.messageParsed.temp);
-        console.log(this.controlTemperatureShow);
+        // if(message != "activate_fan" ||)
+        // console.log(this.controlTemperatureShow);
         if (!this.controlTemperatureShow) {
             this.controlTemperatureShow = true;
         }
-            
+
+        let changeTemp = false;
+
         $('#kontrol-suhu').show();
-        if(this.messageParsed.change_temp) {
-            if(this.firstInput) this.firstInput = false;
-            else $('#current-temp').html(parseInt(this.messageParsed.temp, 10));
+        if(message == "activate_fan" || message == "activate_heater") {
             $('#change_temp').show();
         } else {
-            $('#current-temp').html(parseInt(this.messageParsed.temp, 10));
-            $('#temperature_input').val(parseInt(this.messageParsed.temp, 10));
+            $('#current-temp').html(message);
+            $('#temperature_input').val(message);
             $('#change_temp').hide();
+            changeTemp = true;
         }
+
+        $.ajax({
+            url: 'api/temperature', // URL to send the request to
+            type: 'POST', // Request type
+            data: {
+                temp: $('#current-temp').html(),
+                change_temp: changeTemp
+            }, // Data to be sent to the server
+            success: function(response) {
+                // Code to handle a successful response
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                // Code to handle an error response
+                console.error('Error:', status, error);
+            }
+        });
+        
     }
 
     onConnect() {
@@ -34,20 +52,26 @@ class TemperatureController {
         this.mqttClient.subscribe(this.topic);
     }
 
-    changeTemperature(newTemperatureVal) {
+    changeTemperature(message, newTemperatureVal) {
         $('#temperature_input').val(newTemperatureVal);
-        var message = JSON.stringify({"temp": newTemperatureVal, "change_temp": true});
+
+        // var message = newTemperatureVal + "," + "true";
         this.firstInput = true;
         this.mqttClient.publish(this.topic, message);
     }
 
     init() {
         $(document).ready(() => {
-            $('#turun-suhu').on('click', () => this.changeTemperature($('#temperature_input').val() - 1));
-            $('#naik-suhu').on('click', () => this.changeTemperature(+$('#temperature_input').val() + 1));
-            $('#temperature_input').on('change', () => this.changeTemperature(+$('#temperature_input').val()));
-
+            var temperature = parseInt($('#temperature_input').val());
+            $('#turun-suhu').on('click', () => this.changeTemperature( "activate_fan", temperature - 1));
+            $('#naik-suhu').on('click', () => this.changeTemperature("activate_heater", +temperature + 1));
+            // $('#temperature_input').on('change', () => this.changeTemperature(this.currentTemperature, +$('#temperature_input').val()));
+            
+            if(temperature > 30) alert("turunkan suhu! Jangan lupa berikan makanan!");
+            else if(temperature < 26) alert("naikan suhu! Jangan lupa berikan makanan!");
             this.mqttClient.connect(this.onConnect.bind(this));
+
+
         });
     }
 }

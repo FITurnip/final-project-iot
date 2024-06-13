@@ -1,7 +1,7 @@
 class FeedControl {
     constructor(maxCapacity) {
         this.message = null;
-        this.topic = '/p/feed';
+        this.topic = '/p/food';
         this.isFeeding = false;
         this.currentDistance = null;
         this.isReady = false;
@@ -11,22 +11,23 @@ class FeedControl {
     }
 
     handleMessage(message) {
-        this.message = JSON.parse(message); // Fixed: Changed to message
-        console.log(this.message);
-
-        var persentage = (this.maxCapacity - this.message.distance) * 100 / this.maxCapacity;
+        // this.message = JSON.parse(message);
+        // let str = message.split(", ");
+        // console.log(this.str);
 
         if(!this.ready) {
             this.ready = true;
             $('#feed-btn').prop("disabled", false);
         }
 
-        if(this.message.bottle_cap == "close") {
+        if(message != "activate_food") {
             console.log('Feed have been given');
+            var persentage = (this.maxCapacity - parseFloat(message)) * 100 / this.maxCapacity;
             this.isFeeding = false;
             $('#feed-btn').html("Berikan Pakan");
             $('#feed-btn').prop("disabled",false);
-        } else if(this.message.bottle_cap == "open") {
+
+        } else {
             console.log('Feeding');
             this.isFeeding = false;
             $('#feed-btn').prop("disabled",true);
@@ -35,6 +36,10 @@ class FeedControl {
         
         $('#persentase_pekan').html(persentage);
         $('.mount').css('height', 100 - persentage + "%");
+
+        if(persentage == 20) {
+            alert("Pakan sudah habis, berikan pakan");
+        }
     }
 
     onConnect() {
@@ -52,15 +57,15 @@ class FeedControl {
 
     feed() {
         this.isFeeding = true;
-
-        var message = JSON.stringify({"distance": this.currentDistance, "bottle_cap": "open"});
-
+        var message = "activate_food";
         this.mqttClient.publish(this.topic, message);
     }
 
     init() {
         $(document).ready(() => {
             $('#feed-btn').on('click', () => this.feed());
+
+            // setInterval(feed, 5000);
         });
     }
 }

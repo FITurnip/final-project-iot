@@ -86,7 +86,7 @@
                                                 class="fas fa-arrow-up" ></i></button>
                                     </div>
                                     <div class="col-6">
-                                        <input type="number" name="temperature_input" id="temperature_input" class="form-control text-center"
+                                        <input type="text" name="temperature_input" id="temperature_input" class="form-control text-center"
                                             value="30">
                                     </div>
                                     <div class="col-3">
@@ -140,7 +140,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
